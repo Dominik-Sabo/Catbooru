@@ -1,0 +1,25 @@
+span{
+    color: green;
+    margin-left: 30px;
+}
+
+button{
+    margin-left: 20%;
+}
+
+.upper{
+    border-top-style: solid;
+    border-top-color: grey;
+    padding-top: 15px;
+}
+
+.username:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.comment{
+    padding-left: 30px;
+    margin-top: 20px;
+    padding-bottom: 10px;   
+}

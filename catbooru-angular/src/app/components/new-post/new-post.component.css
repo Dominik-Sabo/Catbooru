@@ -1,0 +1,17 @@
+div{
+    padding-top: 75px;
+    text-align: center;
+}
+
+input{
+    margin-bottom: 50px;
+}
+
+button{
+    margin-bottom: 50px;
+}
+
+.tags{
+    width: 50%;
+    margin-left: 20px;
+}

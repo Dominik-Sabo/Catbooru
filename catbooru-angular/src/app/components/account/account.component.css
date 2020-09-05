@@ -1,0 +1,18 @@
+span:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+ul{
+    padding-top: 50px;
+    margin-left: 35%;
+}
+
+label{
+    margin-inline:20px;
+    width:120px;
+}
+
+button{
+    margin:20px;
+}

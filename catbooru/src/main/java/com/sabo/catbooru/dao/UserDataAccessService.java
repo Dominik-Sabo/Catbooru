@@ -26,20 +26,25 @@ public class UserDataAccessService {
     }
 
     public User getUserByUsername(String username){
-        final String sql = "SELECT * FROM users WHERE username = ?";
-        try{
-        return jdbcTemplate.queryForObject(sql, new Object[]{username}, (resultSet, i) -> {
-            UUID personId = UUID.fromString(resultSet.getString("id"));
-            String name = resultSet.getString("username");
-            String password = resultSet.getString("password");
-            return new User(personId, name, password);
-        });
-        }
-        catch (DataAccessException e){
-            User user = null;
-            return user;
-        }
+            final String sql = "SELECT * FROM users WHERE username = ?";
+            try{
+                return jdbcTemplate.queryForObject(sql, new Object[]{username}, (resultSet, i) -> {
+                    UUID personId = UUID.fromString(resultSet.getString("id"));
+                    String name = resultSet.getString("username");
+                    String password = resultSet.getString("password");
+                    return new User(personId, name, password);
+                });
+            }
+            catch (DataAccessException e){
+                User user = null;
+                return user;
+            }
 
+    }
+
+    public String getUsernameById(UUID id){
+        final String sql = "SELECT * FROM users WHERE id = ?";
+            return jdbcTemplate.queryForObject(sql, new Object[]{id}, (resultSet, i) -> resultSet.getString("username"));
     }
 
     public void deleteUserById(UUID id){

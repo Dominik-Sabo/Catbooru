@@ -28,14 +28,13 @@ public class UserService implements UserDetailsService {
         this.userDataAccessService = userDataAccessService;
     }
 
-    public UUID registerNewUser(User user){
-        user.generateId();
+    public void registerNewUser(User user){
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDataAccessService.registerNewUser(user);
-        return user.getId();
     }
 
     public void deleteUserById(UUID id){
+        postService.deleteUserComments(id);
         postService.deleteUserPosts(id);
         userDataAccessService.deleteUserById(id);
     }

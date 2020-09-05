@@ -1,0 +1,22 @@
+
+
+<ul>
+    <h2>Greetings, {{username}}</h2>
+    <br>
+    <span (click)="onPostsClick()">Your posts</span><br>
+    <span (click)="onLikedClick()">Liked posts</span><br>
+    <span (click)="onCommentedClick()">Commented posts</span><br>
+    <br>
+    <span (click)="onLogoutClick()">Logout</span>
+    <br><br><br>
+    
+        <div>
+            <h3 *ngIf='show'>{{error}}</h3>
+            <label for="username">New username: </label><input (keyup)='onUsernameKey($event)' type="text" name="username" id="username"><br>
+            <label for="password">New password: </label><input (keyup)='onPasswordKey($event)' type="password" name="password" id="password"><br>
+            <button (click)="onChangeClick()">Change username/password</button>
+        </div>
+    
+    <br><br>
+    <span (click)="onDeleteClick()">Delete Account</span>
+</ul>

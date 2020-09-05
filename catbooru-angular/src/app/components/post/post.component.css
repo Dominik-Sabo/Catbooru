@@ -1,0 +1,44 @@
+.tags{
+    float: left;
+    margin-left: 100px;
+    padding-top: 50px;
+}
+
+h3{
+    margin-left: -20px;
+}
+
+.post{
+    padding-top: 50px;
+    border-bottom-style: solid;
+    border-left-style: solid;
+}
+
+.right{
+    margin-left: 400px;
+}
+
+#tag{
+    width: 100px;
+}
+
+#comment{
+    width: 30%;
+}
+
+button{
+    margin-left: 10px;
+}
+
+p{
+    padding-top: 30px;
+    padding-left: 30px;
+}
+
+
+.comments{
+    border-left-style: solid;
+    border-bottom-style: solid;
+    border-right-style: solid;
+    width: 70%;
+}

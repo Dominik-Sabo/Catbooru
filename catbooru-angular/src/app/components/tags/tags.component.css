@@ -1,0 +1,10 @@
+span:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+button{
+    margin-right: 10px;
+    margin-top: 10px;
+}
+

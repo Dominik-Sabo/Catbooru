@@ -1,0 +1,31 @@
+<div class="title">
+    <h1 (click)='home()'>CATBOORU</h1>
+</div>
+
+<nav>
+    <ul>
+        <li (click)='onLoginClick()'>{{login}}</li>
+        <li (click)='onPostsClick()'>Posts</li>
+        <li (click)='onTagsClick()'>Tags</li>
+        <li (click)='onNewClick()'>New</li>    
+    </ul>
+</nav>
+
+
+<div class="search">
+    <input (keyup)='onKey($event)' type="text">
+    <select (change)='onSelect($event)' name="order" id="order">
+        <option value="time descending">Newest</option>
+        <option value="time ascending">Oldest</option>
+        <option value="upvotes descending">Most upvotes</option>
+    </select>
+    <button (click)='onSearchClick()'>Search</button>
+</div>
+
+
+<router-outlet (activate)="onActivate($event)"></router-outlet>
+
+
+
+<h2>{{message}}</h2>
+

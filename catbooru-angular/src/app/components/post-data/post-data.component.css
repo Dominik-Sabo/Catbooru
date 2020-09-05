@@ -1,0 +1,28 @@
+.post{
+    margin-left: 50px;
+}
+
+.image{
+    padding-bottom: 50px;
+    max-width: 90%;
+    height: auto;
+}
+
+span:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+span{
+    margin-right: 25%;
+}
+
+.like{
+    width: 25px;
+    height: auto;
+    margin-left: 10px;
+}
+
+.like:hover{
+    cursor: pointer;
+}

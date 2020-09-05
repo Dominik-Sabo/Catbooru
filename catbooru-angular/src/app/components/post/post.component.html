@@ -1,0 +1,20 @@
+
+<div class='tags'>
+    <h3>Tags:</h3>
+    <app-tags (delete)='onDeleteTagClick($event)' (emitter)='onClick($event)' *ngFor="let tag of tags" [tag]="tag"></app-tags>
+    <br>
+    <input (keyup)='onTagKey($event)' type="text" name="tag" id="tag" value={{tag}}> <button (click)='onAddTagClick()'>add</button>
+</div>
+
+<div class="right">
+    <div class='post'>
+        <app-post-data (delete)='onDeletePostClick($event)' (emitter)='onClick($event)' [post]="post"></app-post-data>
+    </div>
+
+    <div class="comments">
+        <p *ngIf='loggedIn; else logIn'><input (keyup)='onCommentKey($event)' type="text" name="comment" id="comment" value={{comment}}> <button (click)='onAddCommentClick()'>Comment</button></p>
+        <ng-template #logIn><p>Log in to comment</p></ng-template><br>
+        <app-comments (delete)='onDeleteCommentClick($event)' (emitter)='onClick($event)' *ngFor="let comment of comments" [comment]="comment"></app-comments>
+        <p *ngIf='noComments'>No comments yet</p>
+    </div>  
+</div>

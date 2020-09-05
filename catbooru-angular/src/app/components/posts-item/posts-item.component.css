@@ -1,0 +1,16 @@
+.post{
+    max-width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-bottom-style: solid;
+    border-color: darkslategray;
+}
+
+.upvote{
+    width: 20px;
+    height: auto;
+}
+
+.upvotes{
+    margin: 20px;
+}

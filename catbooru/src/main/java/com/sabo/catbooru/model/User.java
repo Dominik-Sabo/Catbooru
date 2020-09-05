@@ -7,7 +7,9 @@ import java.util.UUID;
 public class User {
     private UUID id;
     private String username;
+    private String token;
     private String password;
+
 
     public User(UUID id, String username, String password) {
         this.username = username;
@@ -39,5 +41,13 @@ public class User {
 
     public UUID getId() {
         return id;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getToken() {
+        return token;
     }
 }

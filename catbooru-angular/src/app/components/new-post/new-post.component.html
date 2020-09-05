@@ -1,0 +1,7 @@
+<div>
+    <input type="file" name="image" (change)='onFileSelect($event)' /><br>
+    <p>Input tags individually seperated by space</p>
+    <label for="tags">Tags:</label><input class='tags' type="text" name="tags" (keyup)='onKey($event)' /><br>
+    <button (click)='onUploadClick()'>Upload</button>
+    <h2 *ngIf='error'>Uploaded file must be an image file smaller than 15MB!</h2>
+</div>

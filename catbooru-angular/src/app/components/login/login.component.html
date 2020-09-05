@@ -1,0 +1,8 @@
+<div>
+    <h2>Login</h2>
+    <h3 *ngIf='show'>Incorrect username or password</h3>
+    <label for="username">Username: </label><input (keyup)='onUsernameKey($event)' type="text" name="username" id="username"><br>
+    <label for="password">Password: </label><input (keyup)='onPasswordKey($event)' type="password" name="password" id="password"><br>
+    <button (click)='onClick()'>Login</button>
+    <p class = 'signup'>No account? <span (click)='onSignupClick()'>sign up</span></p>
+</div>

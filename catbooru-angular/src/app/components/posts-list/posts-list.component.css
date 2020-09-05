@@ -1,0 +1,26 @@
+app-posts-item{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    float: left;
+    border-style: solid;
+    border-color: black;
+    height: 225px;
+    margin-left: 75px;
+    margin-bottom: 50px;
+}
+
+.what{
+    margin-top: 75px;
+}
+
+app-posts-item:hover{
+    cursor: pointer;
+    background-color: blanchedalmond;
+    border-color: darkslategray;
+}
+
+h2{
+    padding-top: 50px;
+    text-align: center;
+}

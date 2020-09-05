@@ -1,0 +1,8 @@
+<div class="post">
+    <div>
+        <img class='image' src={{post.filePath}} alt="{{post.filePath}}">
+    </div>
+    <p>Uploaded by: <span (click)='onClick(post.username)'>{{post.username}}</span><button *ngIf="uploaded" (click)='onDeleteClick()'>Delete</button></p>
+    <p>{{post.upvotes}}<img class='like' (click)='onUpvoteClick()' *ngIf='liked; else notLiked' src="assets/inner/fullheart.png"><ng-template #notLiked><img class='like' (click)='onUpvoteClick()' src="assets/inner/blankheart.png"></ng-template></p>
+</div>
+

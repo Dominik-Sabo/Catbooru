@@ -1,18 +1,13 @@
 package com.sabo.catbooru.service;
 
 import com.sabo.catbooru.dao.PostDataAccessService;
+import com.sabo.catbooru.dao.UserDataAccessService;
+import com.sabo.catbooru.model.Comment;
 import com.sabo.catbooru.model.Post;
 import com.sabo.catbooru.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 
@@ -27,9 +22,18 @@ public class PostService {
     @Autowired
     private PostDataAccessService postDataAccessService;
 
+    @Autowired
+    private UserDataAccessService userDataAccessService;
+
     public void createNewPost(Post post) throws Exception{
-        storageService.save(post.getImageFile());
-        post.setFilePath(post.getImageFile().getOriginalFilename());
+        String filename = UUID.randomUUID().toString();
+        if(post.getImageFile().getOriginalFilename().toLowerCase().endsWith(".jpg")) filename = filename + ".jpg";
+        else if(post.getImageFile().getOriginalFilename().toLowerCase().endsWith(".jpeg")) filename = filename + ".jpeg";
+        else if(post.getImageFile().getOriginalFilename().toLowerCase().endsWith(".png")) filename = filename + ".png";
+        else if(post.getImageFile().getOriginalFilename().toLowerCase().endsWith(".gif")) filename = filename + ".gif";
+        else throw new Exception();
+        storageService.save(post.getImageFile(), filename);
+        post.setFilePath(filename);
         postDataAccessService.createNewPost(post);
         if(post.getTags().isBlank()) return;
         postDataAccessService.addPostTags(post.getId(), listToArray(removeDuplicateTags(post.getTags())));
@@ -37,11 +41,20 @@ public class PostService {
 
     public void deletePostById(UUID id){
         postDataAccessService.deletePostTags(id);
+        postDataAccessService.deletePostComments(id);
+        postDataAccessService.deletePostLikes(id);
         postDataAccessService.deletePostById(id);
     }
 
-    public void addTags(UUID id, String tagString){
-        postDataAccessService.addPostTags(id, listToArray(removeTableDuplicateTags(tagString, id)));
+    public void deleteUserComments(UUID id){
+        postDataAccessService.deleteUserComments(id);
+    }
+
+    public String addTags(UUID id, String tagString){
+        ArrayList<String> tags = removeTableDuplicateTags(tagString, id);
+        if(tags.isEmpty()) return null;
+        postDataAccessService.addPostTags(id, listToArray(tags));
+        return tags.get(0);
     }
 
     public void deleteTag(UUID id, String tag){
@@ -53,15 +66,23 @@ public class PostService {
         if(posts.isEmpty()) return null;
 
         for(Post post : posts){
-            post.setImageResource(storageService.load(post.getFilePath()));
+            post.setFilePath(storageService.load(post.getFilePath()));
         }
 
         return sortPosts(posts, order, sort);
     }
 
+    public List<String> getPostTags(UUID postId){
+        List<String> tags = postDataAccessService.getPostTags(postId);
+        Collections.sort(tags);
+        return tags;
+    }
+
 
 
     public List<Post> filterPosts(String query, String order, String sort){
+
+        if(query.isBlank()) return getAllPosts(order, sort);
 
         ArrayList<String> listQuery = removeDuplicateTags(query);
         boolean userInQueryFlag = false;
@@ -99,7 +120,7 @@ public class PostService {
         if(posts.isEmpty()) return null;
 
         for(Post post : posts){
-            post.setImageResource(storageService.load(post.getFilePath()));
+            post.setFilePath(storageService.load(post.getFilePath()));
         }
         return sortPosts(posts, order, sort);
     }
@@ -117,8 +138,36 @@ public class PostService {
     public List<Post> getUserPosts(UUID userId, String order, String sort){
         List<Post> posts =  postDataAccessService.getUserPosts(userId);
 
+        if(posts.isEmpty()) return null;
+
         for(Post post : posts){
-            post.setImageResource(storageService.load(post.getFilePath()));
+            post.setFilePath(storageService.load(post.getFilePath()));
+        }
+
+        return sortPosts(posts, order, sort);
+    }
+
+    public List<Post> getLikedPosts(UUID userId, String order, String sort){
+
+        List<Post> posts =  postDataAccessService.getLikedPosts(userId);
+
+        if(posts.isEmpty()) return null;
+
+        for(Post post : posts){
+            post.setFilePath(storageService.load(post.getFilePath()));
+        }
+
+        return sortPosts(posts, order, sort);
+    }
+
+    public List<Post> getCommentedOnPosts(UUID userId, String order, String sort){
+
+        List<Post> posts =  postDataAccessService.getCommentedOnPosts(userId);
+
+        if(posts.isEmpty()) return null;
+
+        for(Post post : posts){
+            post.setFilePath(storageService.load(post.getFilePath()));
         }
 
         return sortPosts(posts, order, sort);
@@ -127,8 +176,15 @@ public class PostService {
     public Post getPost(UUID id){
         Post post = postDataAccessService.getPost(id).orElse(null);
         if(post == null) return null;
-        post.setImageResource(storageService.load(post.getFilePath()));
+        post.setFilePath(storageService.load(post.getFilePath()));
+        post.setUsername(userDataAccessService.getUsernameById(post.getUserId()));
         return post;
+    }
+
+    public List<String> getAllTags(){
+        List<String> tags = postDataAccessService.getAllTags();
+        Collections.sort(tags);
+        return tags;
     }
 
     public void likePost(UUID userId, UUID postId){
@@ -137,6 +193,27 @@ public class PostService {
 
     public void unlikePost(UUID userId, UUID postId){
         postDataAccessService.unlikePost(userId, postId);
+    }
+
+    public void commentOnPost(Comment comment){
+        postDataAccessService.commentOnPost(comment);
+    }
+
+    public void deleteCommentById(UUID commentId){
+        postDataAccessService.deleteCommentById(commentId);
+    }
+
+    public List<Comment> getPostComments(UUID postId){
+        List<Comment> comments = postDataAccessService.getPostComments(postId);
+        for(Comment comment : comments){
+            comment.setUsername(userDataAccessService.getUsernameById(comment.getUserId()));
+        }
+        comments.sort(Comparator.comparing(Comment::getTime).reversed());
+        return comments;
+    }
+
+    public List<UUID> getPostLikes(UUID postId){
+        return postDataAccessService.getPostLikes(postId);
     }
 
     private List<Post> sortPosts(List<Post> posts, String order, String sort) {
@@ -170,9 +247,9 @@ public class PostService {
 
         ArrayList<String> duplicateList = removeDuplicateTags(tagString);
 
-        List<Object> postTags = postDataAccessService.getPostTags(id);
-        for(Object tag : postTags){
-            duplicateList.remove(tag.toString());
+        List<String> postTags = postDataAccessService.getPostTags(id);
+        for(String tag : postTags){
+            duplicateList.remove(tag);
         }
         return duplicateList;
     }

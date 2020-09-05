@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 public class UserController {
 
 
@@ -31,33 +32,35 @@ public class UserController {
     private JwtUtil jwtTokenUtil;
 
     @GetMapping("/hello")
-    public void hello(@RequestParam String username) {
-        userService.getUserByUsername(username);
+    public ResponseEntity<User> hello() {
+        return ResponseEntity.ok().body(new User("aaaaa", "aaaaa"));
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UUID> registerNewUser(@RequestBody User user, HttpServletResponse response) {
-        UUID userId = userService.registerNewUser(user);
-        this.addAuthenticationCookie("Bearer" + generateJwt(user), response);
-        return ResponseEntity.ok().body(userId);
+    public ResponseEntity<User> registerNewUser(@RequestBody User user) {
+        user.generateId();
+        userService.registerNewUser(user);
+        String jwt = generateJwt(user);
+        user.setToken(jwt);
+        return ResponseEntity.ok().body(user);
     }
 
     @DeleteMapping(path = "{id}")
-    public ResponseEntity<?> deleteUserByUsername(@PathVariable UUID id, HttpServletResponse response) {
+    public ResponseEntity<?> deleteUserByUsername(@PathVariable UUID id) {
         userService.deleteUserById(id);
-        addAuthenticationCookie("", response);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping(path = "{id}")
-    public ResponseEntity<?> changeUsernamePassword(@PathVariable UUID id, @RequestBody User user, HttpServletResponse response) {
+    public ResponseEntity<User> changeUsernamePassword(@PathVariable UUID id, @RequestBody User user, HttpServletResponse response) {
         userService.changeUsernamePassword(id, user);
-        this.addAuthenticationCookie("Bearer" + generateJwt(user), response);
-        return ResponseEntity.ok().build();
+        String jwt = generateJwt(user);
+        user.setToken(jwt);
+        return ResponseEntity.ok().body(user);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UUID> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest, HttpServletResponse response) throws Exception {
+    public ResponseEntity<User> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
@@ -68,14 +71,14 @@ public class UserController {
 
         User user = userService.getUserByUsername(authenticationRequest.getUsername());
 
-        this.addAuthenticationCookie("Bearer" + generateJwt(user), response);
-
-        return ResponseEntity.ok().body(user.getId());
+        String jwt = generateJwt(user);
+        user.setToken(jwt);
+        user.setPassword(null);
+        return ResponseEntity.ok().body(user);
     }
 
     @PostMapping("/outlog")
-    public ResponseEntity<?> logout(HttpServletResponse response) {
-        addAuthenticationCookie("", response);
+    public ResponseEntity<?> logout() {
         return ResponseEntity.ok().build();
     }
 

@@ -31,12 +31,22 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .authorizeRequests().antMatchers("/login").permitAll()
+                .authorizeRequests()
+                .antMatchers("/login").permitAll()
                 .antMatchers("/register").permitAll()
+                .antMatchers("/posts/{id}").permitAll()
+                .antMatchers("/posts/all").permitAll()
+                .antMatchers("/posts/query").permitAll()
+                .antMatchers("/posts/{postId}/comments").permitAll()
+                .antMatchers("/posts/{postId}/tags").permitAll()
+                .antMatchers("/posts/{postId}/upvotes").permitAll()
+                .antMatchers("/posts/tags").permitAll()
                 .anyRequest().authenticated()
                 .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+
+        http.cors();
     }
 
     @Override

@@ -1,0 +1,45 @@
+ul li{
+    width: 100%;
+    float: left;
+    margin-inline: 30px;
+    margin-top: 50px;
+    list-style: none;
+}
+
+ul li:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+nav{
+    text-align: center;
+}
+
+ul{
+    margin-inline: 35%;
+    text-align: center;
+    display: flex;
+}
+
+.search{
+    text-align: center;
+    border-bottom-style: solid;
+    padding-bottom: 50px;
+}
+.title{
+    margin-top: 50px;
+    text-align: center;
+}
+
+h1:hover{
+    cursor: pointer;
+}
+
+h2{
+    padding-top: 50px;
+    text-align: center;
+}
+
+select{
+    margin-inline: 25px;
+}

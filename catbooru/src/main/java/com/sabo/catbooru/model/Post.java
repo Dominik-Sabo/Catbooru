@@ -11,11 +11,11 @@ public class Post {
 
     private UUID id;
     private UUID userId;
+    private String username;
     private String filePath;
     private int upvotes;
     private String tags;
     private MultipartFile imageFile;
-    private Resource imageResource;
     private Date time;
 
     public Post(){};
@@ -56,7 +56,7 @@ public class Post {
     }
 
     public void setFilePath(String filePath) {
-        this.filePath = filePath;
+        this.filePath = filePath.replace("file:/D:/College/Web/Project/catbooru/../catbooru-angular/src/", "");
     }
 
     public int getUpvotes() {
@@ -83,12 +83,11 @@ public class Post {
         this.time = time;
     }
 
-    public Resource getImageResource() {
-        return imageResource;
+    public String getUsername() {
+        return username;
     }
 
-    public void setImageResource(Resource imageResource) {
-        this.imageResource = imageResource;
+    public void setUsername(String username) {
+        this.username = username;
     }
-
 }

@@ -13,11 +13,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
@@ -31,21 +29,13 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
 
-        Cookie[] cookies = request.getCookies();
-        String authorizationHeader = null;
-
-        if(cookies != null){
-            for (Cookie cookie : cookies)
-            {
-                if(cookie.getName().equals("authentication")) authorizationHeader = cookie.getValue();
-            }
-        }
+        final String authorizationHeader = request.getHeader("Authorization");
 
         String username = null;
         String jwt = null;
 
-        if(authorizationHeader != null && authorizationHeader.startsWith("Bearer")){
-            jwt = authorizationHeader.substring(6);
+        if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")){
+            jwt = authorizationHeader.substring(7);
             username = jwtUtil.extractUsername(jwt);
         }
 
