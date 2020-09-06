@@ -13,6 +13,7 @@ export class AccountComponent implements OnInit {
   changeusername:string;
   password:string = '';
   username:string= '';
+  confirm:string= '';
   show:boolean = false;
   error:string;
 
@@ -21,6 +22,8 @@ export class AccountComponent implements OnInit {
   onUsernameKey(event) {this.changeusername = event.target.value; if(event.key === 'Enter') this.onChangeClick();}
 
   onPasswordKey(event) {this.password = event.target.value; if(event.key === 'Enter') this.onChangeClick();}
+
+  onConfirmKey(event) {this.confirm = event.target.value; if(event.key === 'Enter') this.onChangeClick();}
 
   ngOnInit(): void {
     if(this.userService.user == null){
@@ -48,6 +51,7 @@ export class AccountComponent implements OnInit {
       this.error = 'Both fields must be filled'
       this.show = true;
     } 
+    else if(this.password != this.confirm){ this.error = "Password confirmation failed"; this.show = true;}
     else{
       this.userService.changeUsernamePassword(this.changeusername, this.password).subscribe(
         user => {
@@ -58,6 +62,8 @@ export class AccountComponent implements OnInit {
           this.username = this.userService.user.username
           this.changeusername = '';
           this.password = '';
+          this.confirm = '';
+          this.show = false;
         },
         error => {          
           this.error = 'Username already taken';

@@ -30,12 +30,7 @@ public class UserController {
 
     @Autowired
     private JwtUtil jwtTokenUtil;
-
-    @GetMapping("/hello")
-    public ResponseEntity<User> hello() {
-        return ResponseEntity.ok().body(new User("aaaaa", "aaaaa"));
-    }
-
+    
     @PostMapping("/register")
     public ResponseEntity<User> registerNewUser(@RequestBody User user) {
         user.generateId();

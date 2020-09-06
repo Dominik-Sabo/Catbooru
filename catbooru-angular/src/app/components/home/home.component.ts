@@ -28,7 +28,7 @@ export class HomeComponent implements OnInit {
   onSelect(event) {this.order = event.target.value.split(' '); this.postService.sort = this.order[0]; this.postService.order = this.order[1]}
 
   onPostsClick(){
-    this.router.navigate(['posts']);
+    this.router.navigate(['posts/all']);
     this.message = '';
   }
 
@@ -49,7 +49,7 @@ export class HomeComponent implements OnInit {
   }
 
   onSearchClick(){
-    if(this.query == null) this.query = '';
+    if(this.query == null) this.query = 'all';
     this.postService.query = this.query;
     this.navigate(this.query)
     this.message = '';
@@ -68,6 +68,7 @@ export class HomeComponent implements OnInit {
         case 'loggedOut': this.login = 'Login'; this.message = 'See you later'; this.router.navigate(['']); break;
         case 'accountDeleted': this.login = 'Login'; this.message = 'Fare thee well'; this.router.navigate(['']); break;
         case 'expired': this.login = 'Login'; break;
+        case 'uploaded': this.message = 'Post uploaded'; this.router.navigate(['']); break;
         default: this.router.navigate([event]);
       }
     });

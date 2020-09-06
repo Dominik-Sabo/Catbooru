@@ -2,7 +2,6 @@ ul li{
     width: 100%;
     float: left;
     margin-inline: 30px;
-    margin-top: 50px;
     list-style: none;
 }
 
@@ -27,8 +26,19 @@ ul{
     padding-bottom: 50px;
 }
 .title{
-    margin-top: 50px;
+    background-color: darkslategray;
+    padding-top: 30px;
+    padding-bottom: 20px;
     text-align: center;
+    color: wheat;
+}
+
+.logo{
+    width: 25%;
+}
+
+.logo:hover{
+    cursor: pointer;
 }
 
 h1:hover{
@@ -42,4 +52,9 @@ h2{
 
 select{
     margin-inline: 25px;
+}
+
+.home{
+    padding-top: 40px;
+    background-color: lightgray;
 }

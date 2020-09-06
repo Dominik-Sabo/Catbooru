@@ -4,7 +4,7 @@
 
 .image{
     padding-bottom: 50px;
-    max-width: 90%;
+    max-width: 96.5%;
     height: auto;
 }
 
@@ -15,6 +15,7 @@ span:hover{
 
 span{
     margin-right: 25%;
+    color: darkslateblue;
 }
 
 .like{

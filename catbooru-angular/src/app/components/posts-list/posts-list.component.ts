@@ -30,6 +30,9 @@ export class PostsListComponent implements OnInit {
         if(this.posts == null) this.notfound = "No posts found";
       });
     }
+    else if(this.router.url.includes('/all')){
+      this.router.navigate(['posts']);
+    }
     else{
       this.route.params.subscribe(params => {
         this.postService.query = params['query'];  

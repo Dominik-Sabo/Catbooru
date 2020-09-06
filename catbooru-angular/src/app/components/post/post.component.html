@@ -3,7 +3,7 @@
     <h3>Tags:</h3>
     <app-tags (delete)='onDeleteTagClick($event)' (emitter)='onClick($event)' *ngFor="let tag of tags" [tag]="tag"></app-tags>
     <br>
-    <input (keyup)='onTagKey($event)' type="text" name="tag" id="tag" value={{tag}}> <button (click)='onAddTagClick()'>add</button>
+    <p *ngIf='loggedIn' ><input (keyup)='onTagKey($event)' type="text" name="tag" id="tag" value={{tag}}> <button (click)='onAddTagClick()'>add</button></p>
 </div>
 
 <div class="right">
@@ -12,9 +12,9 @@
     </div>
 
     <div class="comments">
-        <p *ngIf='loggedIn; else logIn'><input (keyup)='onCommentKey($event)' type="text" name="comment" id="comment" value={{comment}}> <button (click)='onAddCommentClick()'>Comment</button></p>
-        <ng-template #logIn><p>Log in to comment</p></ng-template><br>
+        <p class='addcomment' *ngIf='loggedIn; else logIn'><input (keyup)='onCommentKey($event)' type="text" name="comment" id="comment" value={{comment}}> <button (click)='onAddCommentClick()'>Comment</button></p>
+        <ng-template #logIn><p class="addcomment">Log in to comment</p></ng-template><br>
         <app-comments (delete)='onDeleteCommentClick($event)' (emitter)='onClick($event)' *ngFor="let comment of comments" [comment]="comment"></app-comments>
-        <p *ngIf='noComments'>No comments yet</p>
+        <p class='addcomment' *ngIf='noComments'>No comments yet</p>
     </div>  
 </div>

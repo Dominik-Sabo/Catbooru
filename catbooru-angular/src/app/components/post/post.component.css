@@ -1,7 +1,13 @@
 .tags{
+    width: 400px;
+    max-width: 400px;
+    background-color: lightblue;
     float: left;
-    margin-left: 100px;
+    padding-left: 100px;
     padding-top: 50px;
+    padding-bottom: 100px;
+    border-bottom-style: solid;
+
 }
 
 h3{
@@ -30,7 +36,7 @@ button{
     margin-left: 10px;
 }
 
-p{
+.addcomment{
     padding-top: 30px;
     padding-left: 30px;
 }

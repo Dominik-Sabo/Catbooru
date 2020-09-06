@@ -49,17 +49,4 @@ export class UserService {
     };
     return this.http.delete(this.url + this.user.id, requestOptions);
   }
-
-  hello(){
-    const headerDict = {
-      'Authorization': 'Bearer '+this.user.token
-    }
-    
-    const requestOptions = {                                                                                                                                                                             
-      headers: new HttpHeaders(headerDict) 
-    };
-
-    this.http.get<User>(this.url + 'hello', requestOptions).subscribe(hello => console.log(hello))
-  }
-  
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -10,8 +10,9 @@ import { PostService } from 'src/app/services/post-service.service';
   styleUrls: ['./new-post.component.css']
 })
 export class NewPostComponent implements OnInit {
+  @Output() emitter = new EventEmitter<string>()
   file:File;
-  tags:string;
+  tags:string = '';
   uploadForm:FormGroup;  
   error:boolean = false;
   
@@ -19,7 +20,7 @@ export class NewPostComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private userService:UserService, private postService:PostService, private router:Router) { }
 
   ngOnInit(): void {
-    if(this.userService.user == null) this.router.navigate(["login"]);
+    if(this.userService.user == null) this.router.navigate(['']);
     this.uploadForm = this.formBuilder.group({
       file: [''],
       tags: [''],
@@ -45,8 +46,13 @@ export class NewPostComponent implements OnInit {
     formData.append('userId', this.uploadForm.get('userId').value);
     formData.append('tags', this.uploadForm.get('tags').value);
     
-    this.postService.addNewPost(this.userService.user, formData).subscribe(uploaded =>{this.router.navigate([''])},
+    this.postService.addNewPost(this.userService.user, formData).subscribe(
+      uploaded => {
+        this.emitter.emit('uploaded');
+      },
       error => {
+        console.log(error);
+        
         this.error = true;
         if(error.error == null){
           this.userService.logout()
